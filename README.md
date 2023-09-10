@@ -1,66 +1,55 @@
 # Stat System
 
-#Overview
+## Overview
 
-Stat System is a robust and flexible Unity-based system designed to manage various statistics for game elements, including characters, weapons, vehicles, and more. Adhering to solid coding principles, the system is easily extendable and customizable to fit any game's needs.
+Stat System is a robust and flexible Unity-based system designed to manage various statistics for game elements, including characters, weapons, vehicles, and more. Adhering to solid and other great coding principles, the system is easily extendable and customizable to fit any game's needs.
 
+---
 
-----------------------------------------------------------------------------------------------------
+## Features
 
+### Core Features
+1. **Basic Stats**: Manage fundamental stats like health, mana, and speed.
+2. **Dynamic Stat Caps**: Set initial, minimum and maximum values for stats dynamically.
+3. **Event Handling**: Granular events for stat changes, modifier additions/removals, etc.
+4. **Stat Decay and Regeneration**: Built-in methods for stat depletion and regeneration over time.
 
-#Features
+### Advanced Features
+1. **Stat Modifiers**: Apply temporary buffs and debuffs.
+2. **Stat Conditions**: Trigger events based on stat conditions (e.g., low health).
+3. **Stat Formulas**: Use custom formulas to calculate stat values.
+4. **Stat Interactions**: Define complex interactions between different stats.
 
-Core Features
-1. Basic Stats: Manage fundamental stats like health, mana, and speed.
-2. Dynamic Stat Caps: Set minimum and maximum values for stats dynamically.
-3. Event Handling: Granular events for stat changes, modifier additions/removals, etc.
-4. Stat Decay and Regeneration: Built-in methods for stat depletion and regeneration over time.
+---
 
-Advanced Features
-1. Stat Modifiers: Apply temporary buffs and debuffs.
-2. Stat Conditions: Trigger events based on stat conditions (e.g., low health).
-3. Stat Formulas: Use custom formulas to calculate stat values.
-4. Stat Interactions: Define complex interactions between different stats.
+## Installation
+1. Clone Or Download the repository: `git clone https://github.com/hcfgod/StatSystem.git`
+2. Drag the cloned folder into your project.
+3. Navigate to the `StatSystem` folder and explore the examples.
 
+---
 
-----------------------------------------------------------------------------------------------------
+## Usage
 
+### Creating a Stat:
+1. Create a new `StatData` ScriptableObject and set its values to your game's needs.
+2. **Managing Stats**: Use the `StatManager` class to add, remove, or retrieve stats (for pretty much everything, it's a centralized place to manage your stats).
+3. **Applying Modifiers**: Use the `AddModifier` and `RemoveModifier` methods to apply temporary buffs or debuffs.
 
-#Installation
-1. Clone Or Download the repository: git clone https://github.com/hcfgod/StatSystem.git
-2. Drag the cloned folder into your project
-3. Navigate to the StatSystem folder and explore the examples.
+---
 
+## Examples
 
-----------------------------------------------------------------------------------------------------
+Check the `Examples` folder for sample implementations of various features.
 
+---
 
-#Usage
-
-Creating a Stat: Create a new StatData ScriptableObject and set its initial and maximum values.
-Managing Stats: Use the StatManager class to add, remove, or retrieve stats.
-Applying Modifiers: Use the AddModifier and RemoveModifier methods to apply temporary buffs or debuffs.
-
-
-----------------------------------------------------------------------------------------------------
-
-
-#Examples
-
-Check the Examples folder for sample implementations of various features.
-
-
-----------------------------------------------------------------------------------------------------
-
-
-#Contributing
+## Contributing
 
 Feel free to fork the project, create a feature branch, and open a pull request.
 
+---
 
-----------------------------------------------------------------------------------------------------
-
-
-#License
+## License
 
 This project is licensed under the MIT License.
