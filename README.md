@@ -8,18 +8,16 @@ Stat System is a robust and flexible Unity-based system designed to manage vario
 ##Features
 
 -Core Features
-
--Basic Stats: Manage fundamental stats like health, mana, and speed.
--Dynamic Stat Caps: Set minimum and maximum values for stats dynamically.
--Event Handling: Granular events for stat changes, modifier additions/removals, etc.
--Stat Decay and Regeneration: Built-in methods for stat depletion and regeneration over time.
+  -Basic Stats: Manage fundamental stats like health, mana, and speed.
+  -Dynamic Stat Caps: Set minimum and maximum values for stats dynamically.
+  -Event Handling: Granular events for stat changes, modifier additions/removals, etc.
+  -Stat Decay and Regeneration: Built-in methods for stat depletion and regeneration over time.
 
 -Advanced Features
-
--Stat Modifiers: Apply temporary buffs and debuffs.
--Stat Conditions: Trigger events based on stat conditions (e.g., low health).
--Stat Formulas: Use custom formulas to calculate stat values.
--Stat Interactions: Define complex interactions between different stats.
+  -Stat Modifiers: Apply temporary buffs and debuffs.
+  -Stat Conditions: Trigger events based on stat conditions (e.g., low health).
+  -Stat Formulas: Use custom formulas to calculate stat values.
+  -Stat Interactions: Define complex interactions between different stats.
 
 
 ##Installation
