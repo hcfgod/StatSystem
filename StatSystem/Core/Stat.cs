@@ -28,6 +28,8 @@ public class Stat
 
 	public Coroutine CurrentCoroutine { get; set; }
 	
+	public IStatFormula Formula { get; set; } = new DefaultFormula();
+	
 	private List<StatModifier> statModifiers = new List<StatModifier>();
 	private List<Stat> dependentStats = new List<Stat>();
 	
@@ -98,6 +100,13 @@ public class Stat
 	
 	private void RecalculateValue()
 	{
+		if (Formula != null)
+		{
+			Value = Formula.Calculate(dependentStats);
+			OnValueChanged?.Invoke(Value);
+			return;
+		}
+		
 		float finalValue = Value;
 
 		// Apply additive modifiers
