@@ -38,19 +38,9 @@ namespace StatSystem
 			}
 
 			Stat newStat = new Stat(statData);
-			newStat.OnValueChanged += HandleStatValueChanged;
 			statSystem.AddStat(statData, newStat);
 		}
 
-		public void HandleStatValueChanged(float changedValue)
-		{
-			// New code to handle interactions
-			foreach (var stat in statSystem.GetStatDictionary().Values)
-			{
-				_statInteractionManager.TriggerInteractions(stat);
-			}
-		}
-		
 		// Retrieves a Stat based on StatData.
 		public Stat GetStat(StatData statData)
 		{
@@ -167,12 +157,11 @@ namespace StatSystem
 			stat.CurrentCoroutine = null;
 		}
 		
-		public void Dispose()
+		public StatInteractionManager GetStatInteractionManager()
 		{
-			foreach(var stat in statSystem.GetStatDictionary().Values)
-			{
-				stat.OnValueChanged -= HandleStatValueChanged;
-			}
+			return _statInteractionManager;
 		}
+		
+		public void Dispose(){}
 	}
 }

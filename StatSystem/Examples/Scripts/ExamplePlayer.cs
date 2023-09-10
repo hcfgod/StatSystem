@@ -9,6 +9,7 @@ namespace StatSystem
 		private StatManager _statManager;
 	
 		[SerializeField] private StatData healthStatData;
+		[SerializeField] private StatData speedStatData;
 		[SerializeField] private StatData manaStatData;
 		[SerializeField] private StatData attackPowerStatData;
 		[SerializeField] private StatData agilityStatData;
@@ -28,24 +29,31 @@ namespace StatSystem
 			StatCondition lowHealthCondition = new StatCondition("Health", 50, StatConditionType.LessThan);
 			healthStat.AddCondition(lowHealthCondition);
 			
+			Stat speedStat = _statManager.GetStat(speedStatData);
+			
 			Stat agilityStat = _statManager.GetStat(agilityStatData);
 			StatCondition highAgilityCondition = new StatCondition("Agility", 40, StatConditionType.GreaterThan);
-			StatCondition lowAgilityCondition = new StatCondition("Agility", 20, StatConditionType.LessThan);
-
 			agilityStat.OnConditionMet += HighAgilityConditionMet;
-			agilityStat.OnConditionMet += LowAgilityConditionMet;
 			
 			agilityStat.AddCondition(highAgilityCondition);
-			agilityStat.AddCondition(lowAgilityCondition);
 		
 			Stat manaStat = _statManager.GetStat(manaStatData);
 			manaStat.SetFormula(new ManaFormula(healthStat, agilityStat));
 		
 			Stat attackPowerStat = _statManager.GetStat(attackPowerStatData);
 			attackPowerStat.AddDependentStat(healthStat);
-			attackPowerStat.AddDependentStat(manaStat);			
+			attackPowerStat.AddDependentStat(manaStat);	
+			
+			_statManager.GetStatInteractionManager().RegisterInteraction("Agility Interaction1", new SpeedAgilityInteraction());
+			
+			agilityStat.OnValueChanged += AgilityStatValueChanged;
 		}
 	
+		private void AgilityStatValueChanged(float updatedValue)
+		{
+			Debug.Log(updatedValue.ToString());
+		}
+		
 		private void Update()
 		{
 			if(Input.GetKeyDown(KeyCode.K))
@@ -62,16 +70,13 @@ namespace StatSystem
 		{
 			if (condition.StatName == "Agility" && condition.Type == StatConditionType.GreaterThan)
 			{
-				Debug.Log("High Agility Condition Met");
+				_statManager.GetStatInteractionManager().TriggerInteraction("Agility Interaction1", _statManager.GetStat(speedStatData), _statManager.GetStat(agilityStatData));
 			}
 		}
 		
-		public void LowAgilityConditionMet(StatCondition condition)
+		private void OnDestroy()
 		{
-			if (condition.StatName == "Agility" && condition.Type == StatConditionType.LessThan)
-			{
-				Debug.Log("Low Agility Condition Met");
-			}
+			_statManager.GetStat(agilityStatData).OnValueChanged -= AgilityStatValueChanged;
 		}
 	}
 }
