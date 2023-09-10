@@ -7,6 +7,8 @@ using UnityEngine;
 public class StatData : ScriptableObject
 {
 	public string statName;
+	
 	public float initialValue;
+	public float minValue;
 	public float maxValue;
 }

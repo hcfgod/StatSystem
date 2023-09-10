@@ -14,6 +14,11 @@ namespace StatSystem
 		public event Action OnDependentStatRecalculated;
 		public event Action<StatCondition> OnConditionMet;
 
+		private float _value;
+		private float _initialValue;
+		private float _minValue;
+		private float _maxValue;
+
 		public string Name { get; }
 	
 		public float Value
@@ -26,10 +31,24 @@ namespace StatSystem
 				OnValueChanged?.Invoke(_value);
 			}
 		}
-	
-		private float _value;
-	
-		public float MaxValue { get; }
+		
+		public float InitialValue
+		{
+			get { return _initialValue; }
+			set { _initialValue = value; RecalculateValue(); }
+		}
+		
+		public float MinValue
+		{
+			get { return _minValue; }
+			set { _minValue = value; RecalculateValue(); }
+		}
+
+		public float MaxValue
+		{
+			get { return _maxValue; }
+			set { _maxValue = value; RecalculateValue(); }
+		}
 
 		public Coroutine CurrentCoroutine { get; set; }
 	
@@ -57,6 +76,7 @@ namespace StatSystem
 
 			Name = statData.name;
 			Value = statData.initialValue;
+			MinValue = statData.minValue;
 			MaxValue = statData.maxValue;
 		}
 
@@ -125,41 +145,47 @@ namespace StatSystem
 				}
 			}
 		}
-	
+		
 		private void RecalculateValue()
 		{
-			if (Formula != null)
-			{
-				Value = Formula.Calculate(dependentStats);
-				OnValueChanged?.Invoke(Value);
-				return;
-			}
-		
 			float finalValue = Value;
 
-			// Apply additive modifiers
-			foreach (var mod in statModifiers.Where(m => m.Type == StatModifierType.Additive))
+			if (Formula != null)
 			{
-				finalValue += mod.Value;
+				finalValue = Formula.Calculate(dependentStats);
+			}
+			else
+			{
+				// Apply additive modifiers
+				foreach (var mod in statModifiers.Where(m => m.Type == StatModifierType.Additive))
+				{
+					finalValue += mod.Value;
+				}
+
+				// Apply multiplicative modifiers
+				foreach (var mod in statModifiers.Where(m => m.Type == StatModifierType.Multiplicative))
+				{
+					finalValue *= mod.Value;
+				}
 			}
 
-			// Apply multiplicative modifiers
-			foreach (var mod in statModifiers.Where(m => m.Type == StatModifierType.Multiplicative))
-			{
-				finalValue *= mod.Value;
-			}
+			// Clamp the value between MinValue and MaxValue
+			finalValue = Mathf.Clamp(finalValue, MinValue, MaxValue);
 
+			// Set the clamped value and invoke the event
 			Value = finalValue;
 			OnValueChanged?.Invoke(Value);
-		
+
 			// Recalculate dependent stats
 			foreach (var stat in dependentStats)
 			{
 				stat.RecalculateValue();
 			}
-		
+
+			// Check conditions
 			CheckConditions();
-		
+
+			// Invoke the dependent stat recalculated event
 			OnDependentStatRecalculated?.Invoke();
 		}
 	
