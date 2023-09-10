@@ -29,7 +29,8 @@ public class Stat
 	public Coroutine CurrentCoroutine { get; set; }
 	
 	private List<StatModifier> statModifiers = new List<StatModifier>();
-    
+	private List<Stat> dependentStats = new List<Stat>();
+	
 	// Constructor to initialize a new Stat object.
 	public Stat(string name, float initialValue, float maxValue)
 	{
@@ -85,6 +86,16 @@ public class Stat
 		RecalculateValue();
 	}
 	
+	public void AddDependentStat(Stat stat)
+	{
+		dependentStats.Add(stat);
+	}
+	
+	public void RemoveDependentStat(Stat stat)
+	{
+		dependentStats.Remove(stat);
+	}
+	
 	private void RecalculateValue()
 	{
 		float finalValue = Value;
@@ -103,6 +114,12 @@ public class Stat
 
 		Value = finalValue;
 		OnValueChanged?.Invoke(Value);
+		
+		// Recalculate dependent stats
+		foreach (var stat in dependentStats)
+		{
+			stat.RecalculateValue();
+		}
 	}
 	
 	public List<StatModifier> GetStatModifierList()

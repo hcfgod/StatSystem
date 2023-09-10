@@ -123,6 +123,16 @@ public class StatManager : MonoBehaviour, IDisposable
 		stat.RemoveModifier(modifier);
 	}
 	
+	public void AddStatDependency(Stat baseStat, Stat dependentStat)
+	{
+		baseStat.AddDependentStat(dependentStat);
+	}
+	
+	public void RemoveStatDependency(Stat baseStat, Stat dependentStat)
+	{
+		baseStat.RemoveDependentStat(dependentStat);
+	}
+	
 	public void StopStatCoroutine(StatData statData)
 	{
 		Stat stat = GetStat(statData);
