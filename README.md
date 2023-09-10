@@ -4,7 +4,6 @@
 
 Stat System is a robust and flexible Unity-based system designed to manage various statistics for game elements, including characters, weapons, vehicles, and more. Adhering to solid coding principles, the system is easily extendable and customizable to fit any game's needs.
 
-----------------------------------------------------------------------------------------------------
 
 ##Features
 
@@ -22,7 +21,6 @@ Stat System is a robust and flexible Unity-based system designed to manage vario
 -Stat Formulas: Use custom formulas to calculate stat values.
 -Stat Interactions: Define complex interactions between different stats.
 
----------------------------------------------------------------------------------------------------
 
 ##Installation
 
@@ -30,7 +28,6 @@ Stat System is a robust and flexible Unity-based system designed to manage vario
 2. Drag the cloned folder into your project
 3. Navigate to the StatSystem folder and explore the examples.
 
----------------------------------------------------------------------------------------------------
 
 ##Usage
 
@@ -38,22 +35,17 @@ Creating a Stat: Create a new StatData ScriptableObject and set its initial and 
 Managing Stats: Use the StatManager class to add, remove, or retrieve stats.
 Applying Modifiers: Use the AddModifier and RemoveModifier methods to apply temporary buffs or debuffs.
 
----------------------------------------------------------------------------------------------------
 
 ##Examples
 
 Check the Examples folder for sample implementations of various features.
 
----------------------------------------------------------------------------------------------------
 
 ##Contributing
 
 Feel free to fork the project, create a feature branch, and open a pull request.
 
----------------------------------------------------------------------------------------------------
 
 ##License
 
 This project is licensed under the MIT License.
-
----------------------------------------------------------------------------------------------------
