@@ -6,6 +6,6 @@ namespace StatSystem
 {
 	public interface IStatFormula
 	{
-		public float Calculate(List<Stat> baseStats);
+		float Calculate(List<Stat> baseStats, List<StatCondition> statConditions = null);
 	}
 }

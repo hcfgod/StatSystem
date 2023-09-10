@@ -15,7 +15,7 @@ namespace StatSystem
 			this.agilityStat = agilityStat;
 		}
 
-		public float Calculate(List<Stat> baseStats)
+		public float Calculate(List<Stat> baseStats, List<StatCondition> statConditions = null)
 		{
 			return healthStat.Value * 0.3f + agilityStat.Value * 0.7f;
 		}

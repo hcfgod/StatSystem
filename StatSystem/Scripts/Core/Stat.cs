@@ -106,7 +106,7 @@ namespace StatSystem
 			CheckConditions();
 		}
 	
-	 public void AddModifier(StatModifier modifier)
+		public void AddModifier(StatModifier modifier)
 		{
 			statModifiers.Add(modifier);
 			OnModifierAdded?.Invoke(modifier);
@@ -152,7 +152,7 @@ namespace StatSystem
 
 			if (Formula != null)
 			{
-				finalValue = Formula.Calculate(dependentStats);
+				Value = Formula.Calculate(dependentStats, statConditions);
 			}
 			else
 			{
