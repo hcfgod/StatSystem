@@ -1,6 +1,6 @@
 # Stat System
 
-##Overview
+#Overview
 
 Stat System is a robust and flexible Unity-based system designed to manage various statistics for game elements, including characters, weapons, vehicles, and more. Adhering to solid coding principles, the system is easily extendable and customizable to fit any game's needs.
 
