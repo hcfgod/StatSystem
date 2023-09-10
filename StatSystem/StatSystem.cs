@@ -3,23 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// StatSystem manages a collection of Stat objects.
 public class StatSystem
 {
+	// Dictionary to hold StatData and corresponding Stat objects.
 	private Dictionary<StatData, Stat> stats = new Dictionary<StatData, Stat>();
 
+    // Adds a new Stat to the system.
 	public void AddStat(StatData statData, Stat stat)
-	{		
+	{
+		if (stats.ContainsKey(statData))
+		{
+			throw new InvalidOperationException("A stat with the same StatData already exists.");
+		}
+		
 		stats[statData] = stat;
 	}
 
 	public Stat GetStat(StatData statData)
 	{
-		stats.TryGetValue(statData, out Stat stat);
+		if (!stats.TryGetValue(statData, out Stat stat))
+		{
+			throw new KeyNotFoundException("Stat not found.");
+		}
+		
 		return stat;
 	}
 	
 	public void IncreaseStatValue(StatData statData, float amount)
 	{
+		if (amount < 0)
+		{
+			throw new ArgumentException("Amount must be non-negative.");
+		}
+		
 		Stat stat = GetStat(statData);
 		
 		if (stat != null)
@@ -30,6 +47,11 @@ public class StatSystem
 
 	public void DecreaseStatValue(StatData statData, float amount)
 	{
+		if (amount < 0)
+		{
+			throw new ArgumentException("Amount must be non-negative.");
+		}
+		
 		Stat stat = GetStat(statData);
 		
 		if (stat != null)
