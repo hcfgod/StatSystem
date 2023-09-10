@@ -69,6 +69,8 @@ namespace StatSystem
 			}
 		
 			Value = Mathf.Min(Value + amount, MaxValue);
+			
+			CheckConditions();
 		}
 
 		// Decreases the stat value by a given amount.
@@ -80,6 +82,8 @@ namespace StatSystem
 			}
 		
 			Value = Mathf.Max(Value - amount, 0);
+			
+			CheckConditions();
 		}
 	
 	 public void AddModifier(StatModifier modifier)

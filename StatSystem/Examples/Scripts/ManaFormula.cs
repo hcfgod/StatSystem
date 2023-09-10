@@ -6,21 +6,18 @@ namespace StatSystem
 {
 	public class ManaFormula : MonoBehaviour, IStatFormula
 	{
-		private Stat _healthStat;
-		
-		public ManaFormula(Stat healthStat)
+		private Stat healthStat;
+		private Stat agilityStat;
+
+		public ManaFormula(Stat healthStat, Stat agilityStat)
 		{
-			_healthStat = healthStat;
+			this.healthStat = healthStat;
+			this.agilityStat = agilityStat;
 		}
-		
+
 		public float Calculate(List<Stat> baseStats)
 		{
-			float totalValue = 0;
-			foreach (var stat in baseStats)
-			{
-				totalValue += stat.Value;
-			}
-			return totalValue;
+			return healthStat.Value * 0.3f + agilityStat.Value * 0.7f;
 		}
 	}
 }

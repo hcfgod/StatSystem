@@ -6,7 +6,7 @@ using System;
 namespace StatSystem
 {
 	// StatManager is responsible for managing multiple Stat objects.
-	public class StatManager : MonoBehaviour, IDisposable
+	public class StatManager : MonoBehaviour
 	{
 		// List of StatData objects.
 		public List<StatData> statDataList; // Assign in Unity Editor
@@ -36,7 +36,6 @@ namespace StatSystem
 			}
 
 			Stat newStat = new Stat(statData);
-			newStat.OnValueChanged += HandleStatValueChanged;
 			statSystem.AddStat(statData, newStat);
 		}
 
@@ -154,20 +153,6 @@ namespace StatSystem
 			
 			StopCoroutine(stat.CurrentCoroutine);
 			stat.CurrentCoroutine = null;
-		}
-	
-		private void HandleStatValueChanged(float newValue)
-		{
-			Debug.Log("Stat changed. New value: " + newValue);
-		}
-	
-	
-		public void Dispose()
-		{
-			foreach(Stat stat in statSystem.GetStatDictionary().Values)
-			{
-				stat.OnValueChanged -= HandleStatValueChanged;
-			}
 		}
 	}
 }
