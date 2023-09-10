@@ -18,23 +18,23 @@ public class StatSystem
 		return stat;
 	}
 	
-	public void Increase(StatData statData, float amount)
+	public void IncreaseStatValue(StatData statData, float amount)
 	{
 		Stat stat = GetStat(statData);
 		
 		if (stat != null)
 		{
-			stat.Increase(amount);
+			stat.IncreaseStatValue(amount);
 		}
 	}
 
-	public void Decrease(StatData statData, float amount)
+	public void DecreaseStatValue(StatData statData, float amount)
 	{
 		Stat stat = GetStat(statData);
 		
 		if (stat != null)
 		{
-			stat.Decrease(amount);
+			stat.DecreaseStatValue(amount);
 		}
 	}
 
@@ -42,17 +42,26 @@ public class StatSystem
 	{
 		if (stat == null) yield break;
 
-		stat.Increase(regenAmount);
-
-		yield return new WaitForSeconds(delay);
+		while (stat.Value < stat.MaxValue)
+		{
+			stat.IncreaseStatValue(regenAmount);
+			yield return new WaitForSeconds(delay);
+		}
 	}
 
 	public IEnumerator DepleteOverTime(MonoBehaviour host, Stat stat, float delay, float decrementAmount)
 	{
 		if (stat == null) yield break;
 
-		stat.Decrease(decrementAmount);
-
-		yield return new WaitForSeconds(delay);
+		while (stat.Value > 0)
+		{
+			stat.DecreaseStatValue(decrementAmount);
+			yield return new WaitForSeconds(delay);
+		}
+	}
+	
+	public  Dictionary<StatData, Stat> GetStatDictionary()
+	{
+		return stats;
 	}
 }

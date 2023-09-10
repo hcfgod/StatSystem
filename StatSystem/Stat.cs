@@ -31,12 +31,12 @@ public class Stat
 		MaxValue = maxValue;
 	}
 
-	public void Increase(float amount)
+	public void IncreaseStatValue(float amount)
 	{
 		Value = Mathf.Min(Value + amount, MaxValue);
 	}
 
-	public void Decrease(float amount)
+	public void DecreaseStatValue(float amount)
 	{
 		Value = Mathf.Max(Value - amount, 0);
 	}

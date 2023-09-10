@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class StatManager : MonoBehaviour
+public class StatManager : MonoBehaviour, IDisposable
 {
 	public List<StatData> statDataList; // Assign in Unity Editor
 
@@ -28,28 +29,23 @@ public class StatManager : MonoBehaviour
 		newStat.OnValueChanged += HandleStatValueChanged;
 		statSystem.AddStat(statData, newStat);
 	}
-
-	private void HandleStatValueChanged(float newValue)
-	{
-		Debug.Log("Stat changed. New value: " + newValue);
-	}
 	
 	public Stat GetStat(StatData statData)
 	{
 		return statSystem.GetStat(statData);
 	}
 
-	public void Increase(StatData statData, float amount)
+	public void IncreaseStatValue(StatData statData, float amount)
 	{
-		statSystem.Increase(statData, amount);
+		statSystem.IncreaseStatValue(statData, amount);
 	}
 
-	public void Decrease(StatData statData, float amount)
+	public void DecreaseStatValue(StatData statData, float amount)
 	{
-		statSystem.Decrease(statData, amount);
+		statSystem.DecreaseStatValue(statData, amount);
 	}
 	
-	public void RegenerateOverTime(StatData statData, float delay, float regenAmount)
+	public void RegenerateStatValueOverTime(StatData statData, float delay, float regenAmount)
 	{
 		Stat stat = GetStat(statData);
 		if (stat == null) return;
@@ -57,7 +53,7 @@ public class StatManager : MonoBehaviour
 		stat.CurrentCoroutine = StartCoroutine(statSystem.RegenerateOverTime(this, stat, delay, regenAmount));
 	}
 
-	public void DepleteOverTime(StatData statData, float delay, float decrementAmount)
+	public void DepleteStatValueOverTime(StatData statData, float delay, float decrementAmount)
 	{
 		Stat stat = GetStat(statData);
 		if (stat == null) return;
@@ -74,5 +70,18 @@ public class StatManager : MonoBehaviour
 			
 		StopCoroutine(stat.CurrentCoroutine);
 		stat.CurrentCoroutine = null;
+	}
+	
+	private void HandleStatValueChanged(float newValue)
+	{
+		Debug.Log("Stat changed. New value: " + newValue);
+	}
+	
+	public void Dispose()
+	{
+		foreach(Stat stat in statSystem.GetStatDictionary().Values)
+		{
+			stat.OnValueChanged -= HandleStatValueChanged;
+		}
 	}
 }
