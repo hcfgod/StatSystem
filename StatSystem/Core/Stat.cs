@@ -6,9 +6,11 @@ using System.Linq;
 // The Stat class represents an individual statistic.
 public class Stat
 {
-	// Event triggered when the stat value changes.
 	public event Action<float> OnValueChanged;
-
+	public event Action<StatModifier> OnModifierAdded;
+	public event Action<StatModifier> OnModifierRemoved;
+	public event Action OnDependentStatRecalculated;
+	
 	public string Name { get; }
 	
 	public float Value
@@ -79,12 +81,14 @@ public class Stat
 	 public void AddModifier(StatModifier modifier)
 	{
 		statModifiers.Add(modifier);
+		OnModifierAdded?.Invoke(modifier);
 		RecalculateValue();
 	}
 
 	public void RemoveModifier(StatModifier modifier)
 	{
 		statModifiers.Remove(modifier);
+		OnModifierRemoved?.Invoke(modifier);
 		RecalculateValue();
 	}
 	
@@ -129,6 +133,8 @@ public class Stat
 		{
 			stat.RecalculateValue();
 		}
+		
+		OnDependentStatRecalculated?.Invoke();
 	}
 	
 	public List<StatModifier> GetStatModifierList()
