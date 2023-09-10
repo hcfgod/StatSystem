@@ -6,13 +6,15 @@ using System;
 namespace StatSystem
 {
 	// StatManager is responsible for managing multiple Stat objects.
-	public class StatManager : MonoBehaviour
+	public class StatManager : MonoBehaviour, IDisposable
 	{
 		// List of StatData objects.
 		public List<StatData> statDataList; // Assign in Unity Editor
 
 		private StatSystem statSystem;
 
+		private StatInteractionManager _statInteractionManager = new StatInteractionManager();
+		
 		void Awake()
 		{
 			statSystem = new StatSystem();
@@ -36,9 +38,19 @@ namespace StatSystem
 			}
 
 			Stat newStat = new Stat(statData);
+			newStat.OnValueChanged += HandleStatValueChanged;
 			statSystem.AddStat(statData, newStat);
 		}
 
+		public void HandleStatValueChanged(float changedValue)
+		{
+			// New code to handle interactions
+			foreach (var stat in statSystem.GetStatDictionary().Values)
+			{
+				_statInteractionManager.TriggerInteractions(stat);
+			}
+		}
+		
 		// Retrieves a Stat based on StatData.
 		public Stat GetStat(StatData statData)
 		{
@@ -125,10 +137,10 @@ namespace StatSystem
 		public void AddTemporaryStatModifier(Stat stat, StatModifier modifier)
 		{
 			stat.AddModifier(modifier);
-			StartCoroutine(HandleStatModifierDuration(stat, modifier));
+			StartCoroutine(StatModifierDurationRoutine(stat, modifier));
 		}
 	
-		public IEnumerator HandleStatModifierDuration(Stat stat, StatModifier modifier)
+		public IEnumerator StatModifierDurationRoutine(Stat stat, StatModifier modifier)
 		{
 			yield return new WaitForSeconds(modifier.Duration);
 			stat.RemoveModifier(modifier);
@@ -153,6 +165,14 @@ namespace StatSystem
 			
 			StopCoroutine(stat.CurrentCoroutine);
 			stat.CurrentCoroutine = null;
+		}
+		
+		public void Dispose()
+		{
+			foreach(var stat in statSystem.GetStatDictionary().Values)
+			{
+				stat.OnValueChanged -= HandleStatValueChanged;
+			}
 		}
 	}
 }
