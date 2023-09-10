@@ -10,7 +10,8 @@ public class Stat
 	public event Action<StatModifier> OnModifierAdded;
 	public event Action<StatModifier> OnModifierRemoved;
 	public event Action OnDependentStatRecalculated;
-	
+	public event Action<StatCondition> OnConditionMet;
+
 	public string Name { get; }
 	
 	public float Value
@@ -33,6 +34,7 @@ public class Stat
 	public IStatFormula Formula { get; set; } = new DefaultFormula();
 	
 	private List<StatModifier> statModifiers = new List<StatModifier>();
+	private List<StatCondition> statConditions = new List<StatCondition>();
 	private List<Stat> dependentStats = new List<Stat>();
 	
 	// Constructor to initialize a new Stat object.
@@ -102,6 +104,22 @@ public class Stat
 		dependentStats.Remove(stat);
 	}
 	
+	public void AddCondition(StatCondition condition)
+	{
+		statConditions.Add(condition);
+	}
+
+	public void CheckConditions()
+	{
+		foreach (var condition in statConditions)
+		{
+			if (condition.CheckCondition(this))
+			{
+				OnConditionMet?.Invoke(condition);
+			}
+		}
+	}
+	
 	private void RecalculateValue()
 	{
 		if (Formula != null)
@@ -134,11 +152,18 @@ public class Stat
 			stat.RecalculateValue();
 		}
 		
+		CheckConditions();
+		
 		OnDependentStatRecalculated?.Invoke();
 	}
 	
 	public List<StatModifier> GetStatModifierList()
 	{
 		return statModifiers;
+	}
+	
+	public List<StatCondition> GetStatCondidtions()
+	{
+		return statConditions;
 	}
 }

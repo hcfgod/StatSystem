@@ -101,23 +101,33 @@ public class StatManager : MonoBehaviour, IDisposable
 		stat.CurrentCoroutine = StartCoroutine(statSystem.DepleteOverTime(this, stat, delay, decrementAmount));
 	}
 	
-	public void AddPermantantModifier(Stat stat, StatModifier modifier)
+	public void AddStatCondition(Stat stat, StatCondition condition)
+	{
+		stat.GetStatCondidtions().Add(condition);
+	}
+
+	public void CheckStatConditions(Stat stat)
+	{
+		stat.CheckConditions();
+	}
+	
+	public void AddPermantantStatModifier(Stat stat, StatModifier modifier)
 	{
 		stat.AddModifier(modifier);
 	}
 	
-	public void RemovePermantantModifier(Stat stat, StatModifier modifier)
+	public void RemovePermantantStatModifier(Stat stat, StatModifier modifier)
 	{
 		stat.RemoveModifier(modifier);
 	}
 	
-	public void AddTemporaryModifier(Stat stat, StatModifier modifier)
+	public void AddTemporaryStatModifier(Stat stat, StatModifier modifier)
 	{
 		stat.AddModifier(modifier);
-		StartCoroutine(HandleModifierDuration(stat, modifier));
+		StartCoroutine(HandleStatModifierDuration(stat, modifier));
 	}
 	
-	public IEnumerator HandleModifierDuration(Stat stat, StatModifier modifier)
+	public IEnumerator HandleStatModifierDuration(Stat stat, StatModifier modifier)
 	{
 		yield return new WaitForSeconds(modifier.Duration);
 		stat.RemoveModifier(modifier);
