@@ -20,6 +20,9 @@ Advanced Features
 4. Stat Interactions: Define complex interactions between different stats.
 
 
+----------------------------------------------------------------------------------------------------
+
+
 #Installation
 1. Clone Or Download the repository: git clone https://github.com/hcfgod/StatSystem.git
 2. Drag the cloned folder into your project
